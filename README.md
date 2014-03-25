@@ -1,26 +1,20 @@
-# Keen IO - NodeJS
+# Keen IO - Parse Cloud Module
 
-[![Build Status](https://travis-ci.org/keenlabs/KeenClient-Node.png?branch=master)](https://travis-ci.org/keenlabs/KeenClient-Node)
-
-Keen IO is an online service to collect, analyze, and visualize your data.
+This is a Parse.com Cloud Code Module for the Keen API based on the official Keen [NodeJS Client](https://github.com/keenlabs/KeenClient-Node), check there for the most up to date usage documentation. This port from the NodeJS may be incomplete and is not fully tested.
 
 ## Getting Started
 
-Use npm to install!
-
-```node
-`npm install keen.io`
-```
+Copy `keen.js` to your Parse Cloud Code `cloud` directory
 
 ## Examples
 
 ### Initialization
 
 ```javascript
-var keen = require('keen.io');
+var Keen = require('cloud/keen.js');
 
 // Configure instance. Only projectId and writeKey are required to send data.
-var keen = keen.configure({
+var keen = Keen.configure({
 	projectId: "<project_id>",
 	writeKey: "<write_key>",
 	readKey: "<read_key>",
@@ -31,30 +25,52 @@ var keen = keen.configure({
 You can also have multiple instances if you are connecting to multiple KeenIO accounts in the one project (probably edge case).
 
 ```javascript
-var keen = require('keen.io');
+var Keen = require('cloud/keen.js');
 
 // Configure instance with API Key
-var keen1 = keen.configure({...});
-var keen2 = keen.configure({...});
+var keen1 = Keen.configure({...});
+var keen2 = Keen.configure({...});
 ```
 
 In the future there will be the ability to pass options into the initialisation such as batching inserts, etc. The structure of this hasn't been defined yet but will look something like the following.
 
 ```javascript
-var keen = require('keen.io');
+var Keen = require('cloud/keen.js');
 
 // Configure instance with API Key and options
-var keen = keen.configure({ 
+var keen = Keen.configure({ 
 	projectId: "<project_id>",
 	batchEventInserts: 30 
+});
+```
+
+### Support for Parse promises
+
+```javascript
+//example
+var Keen = require('cloud/keen.js');
+var keen = Keen.configure({
+	projectId: "<project_id>",
+	writeKey: "<write_key>"
+});
+
+Parse.Cloud.afterSave('Transaction', function(request){
+	var keenEvent = {
+		total: request.object.get('total');
+		//other event properties
+	}
+	keen.addEvent('transactions', keenEvent)
+	.then(funciton(){
+		//do something else
+	});
 });
 ```
 
 ### Send Events
 
 ```javascript
-var keen = require("keen.io");
-var keen = keen.configure({
+var Keen = require('cloud/keen.js');
+var keen = Keen.configure({
 	projectId: "<project_id>",
 	writeKey: "<write_key>"
 });
@@ -83,9 +99,9 @@ keen.addEvents({
 
 ### Generate Scoped Key
 ```javascript
-var keen = require("keen.io");
+var Keen = require('cloud/keen.js');
 var apiKey = "YOUR_API_KEY";
-var scopedKey = keen.encryptScopedKey(apiKey, {
+var scopedKey = Keen.encryptScopedKey(apiKey, {
 	"allowed_operations": ["read"],
 	"filters": [{
 		"property_name": "account.id",
@@ -93,50 +109,24 @@ var scopedKey = keen.encryptScopedKey(apiKey, {
 		"property_value": "123"
 	}]
 });
-var keen = keen.configure({
+var keen = Keen.configure({
 	projectId: "<project_id>";
 	readKey: scopedKey
 });
 ```
 
-## Future Updates
-
-Future module updates are planned to introduce the remaining API calls. You can see some of the spec for that in [examples/queries.js](https://github.com/keenlabs/KeenClient-Node/blob/master/examples/queries.js). Also, as mentioned above, specifying options when creating an instance to configure the behaviour of the instance (ie, batching event submissions).
-
 ## Contributing
 
-This is an open source project and we love involvement from the community! Hit us up with pull requests and issues. 
+This is an open source project and we love involvement from the community! Hit me up with pull requests and issues.
 
-The aim is to build up this module to completely represent the API provided by Keen IO, which is quite extensive. The more contributions the better!
 
 ## Further Reading
+
+[Keen IO - NodeJS Client](https://github.com/keenlabs/KeenClient-Node)
 
 [Keen IO - Website](https://keen.io/)
 
 [Keen IO - API Technical Reference](https://keen.io/docs/api/reference/)
-
-## Release History
-
-### 0.0.4
-
-- Update dependencies.
-
-### 0.0.3
-
-- Support generating Scoped Keys.
-
-### 0.0.2
-
-- Change error for blank write key.
-
-### 0.0.1
-
-- Add write/read keys.
-- Reworked interface - not backwards compatible with 0.0.0!
-
-### 0.0.0
-
-- First release.
 
 ## License
 

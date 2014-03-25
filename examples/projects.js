@@ -1,6 +1,6 @@
-var keen = require('../index.js');
+var Keen = require('cloud/keen.js');
 
-var keen = keen.configure({
+var keen = Keen.configure({
     projectId: "<project_id>"
     masterKey: "<master_key>"
 });
