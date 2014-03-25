@@ -59,8 +59,9 @@ Parse.Cloud.afterSave('Transaction', function(request){
 		total: request.object.get('total');
 		//other event properties
 	}
+	
 	keen.addEvent('transactions', keenEvent)
-	.then(funciton(){
+	.then(function(){
 		//do something else
 	});
 });
