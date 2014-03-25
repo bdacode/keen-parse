@@ -118,7 +118,7 @@ var keen = Keen.configure({
 
 ## Contributing
 
-This is an open source project and we love involvement from the community! Hit me up with pull requests and issues.
+Hit me up with pull requests and issues.
 
 
 ## Further Reading
