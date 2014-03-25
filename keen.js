@@ -91,13 +91,13 @@ function KeenApi(config) {
     callback = callback || function() {};
 
     if (res && !res.ok && !err) {
-      var is_err = res.body && res.body.error_code;
-      err = new Error(is_err ? res.body.message : 'Unknown error occurred');
-      err.code = is_err ? res.body.error_code : 'UnknownError';
+      var is_err = res.data && res.data.error_code;
+      err = new Error(is_err ? res.data.message : 'Unknown error occurred');
+      err.code = is_err ? res.data.error_code : 'UnknownError';
     }
 
     if (err) return callback(err);
-    return callback(null, res.body);
+    return callback(null, res.data);
   }
 
   // Public Methods
